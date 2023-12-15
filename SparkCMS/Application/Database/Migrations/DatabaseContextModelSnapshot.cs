@@ -62,6 +62,89 @@ namespace SparkCMS.Application.Database.Migrations
                         });
                 });
 
+            modelBuilder.Entity("SparkCMS.Application.Models.Spaark", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("id");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("created_at");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("description");
+
+                    b.Property<string>("Tags")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("tags");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasColumnName("title");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("updated_at");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("user_id");
+
+                    b.HasKey("Id")
+                        .HasName("pk_sparks");
+
+                    b.HasIndex("UserId")
+                        .HasDatabaseName("ix_sparks_user_id");
+
+                    b.ToTable("sparks", (string)null);
+                });
+
+            modelBuilder.Entity("SparkCMS.Application.Models.SparkContent", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("id");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasColumnName("content");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("created_at");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("description");
+
+                    b.Property<int?>("SpaarkId")
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("spaark_id");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasColumnName("title");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("updated_at");
+
+                    b.HasKey("Id")
+                        .HasName("pk_spark_contents");
+
+                    b.HasIndex("SpaarkId")
+                        .HasDatabaseName("ix_spark_contents_spaark_id");
+
+                    b.ToTable("spark_contents", (string)null);
+                });
+
             modelBuilder.Entity("SparkCMS.Application.Models.User", b =>
                 {
                     b.Property<int>("Id")
@@ -133,6 +216,26 @@ namespace SparkCMS.Application.Database.Migrations
                     b.ToTable("user_roles", (string)null);
                 });
 
+            modelBuilder.Entity("SparkCMS.Application.Models.Spaark", b =>
+                {
+                    b.HasOne("SparkCMS.Application.Models.User", "User")
+                        .WithMany("Sparks")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_sparks_users_user_id");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("SparkCMS.Application.Models.SparkContent", b =>
+                {
+                    b.HasOne("SparkCMS.Application.Models.Spaark", null)
+                        .WithMany("SparkContents")
+                        .HasForeignKey("SpaarkId")
+                        .HasConstraintName("fk_spark_contents_sparks_spaark_id");
+                });
+
             modelBuilder.Entity("SparkCMS.Application.Models.UserRole", b =>
                 {
                     b.HasOne("SparkCMS.Application.Models.Role", "Role")
@@ -159,8 +262,15 @@ namespace SparkCMS.Application.Database.Migrations
                     b.Navigation("UserRoles");
                 });
 
+            modelBuilder.Entity("SparkCMS.Application.Models.Spaark", b =>
+                {
+                    b.Navigation("SparkContents");
+                });
+
             modelBuilder.Entity("SparkCMS.Application.Models.User", b =>
                 {
+                    b.Navigation("Sparks");
+
                     b.Navigation("UserRoles");
                 });
 #pragma warning restore 612, 618

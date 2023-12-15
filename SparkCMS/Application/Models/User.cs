@@ -20,4 +20,5 @@ public class User : BaseModel
     public DateTime? EmailVerifiedAt { get; set; }
 
     public virtual ICollection<UserRole> UserRoles { get; set; }
+    public List<Spaark>? Sparks { get; set; }
 }

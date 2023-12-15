@@ -1,6 +1,5 @@
 ﻿using SparkCMS.Application.Models;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection.Emit;
 
 namespace SparkCMS.Application.Database;
 
@@ -13,6 +12,8 @@ public class DatabaseContext : DbContext
     public virtual DbSet<User> Users { set; get; }
     public virtual DbSet<Role> Roles { set; get; }
     public virtual DbSet<UserRole> UserRoles { get; set; }
+    public virtual DbSet<Spaark> Sparks { get; set; }
+    public virtual DbSet<SparkContent> SparkContents { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
