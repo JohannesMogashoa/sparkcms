@@ -1,15 +1,86 @@
 ﻿@page "/dashboard"
 @attribute [Authorize]
 
-<PageTitle>Dashboard</PageTitle>
+<PageTitle>Sparks</PageTitle>
 
 <section class="mx-auto max-w-6xl mb-20">
-    <h1 class="text-2xl text-gray-800 font-bold mb-4">
-        Dashboard
+    <h1 class="text-2xl text-gray-800 font-bold mb-5">
+        Sparks
     </h1>
-    <article class="bg-white shadow rounded-lg w-full my-12 p-6">
-        <p class="text-gray-600">
-            You're logged in!
-        </p>
-    </article>
+    @*This houses all the cards of the sparks you have created*@
+    <section class="flex gap-x-5 w-full">
+        <div class="w-2/3">
+            <div class="grid grid-cols-2 gap-x-3 gap-y-5">
+                @if (Sparks is not null && Sparks.Count > 0)
+                {
+                    foreach (var spark in Sparks)
+                    {
+                        <SparkCard Spark="spark" ModifySpark="EditSpark" />
+                    }
+                } else if (Sparks?.Count == 0)
+                {
+                    <span>No Sparks...please create some!</span>
+                }
+                else
+                {
+                    <span>Fetching data...</span>
+                }
+            </div>
+        </div>
+        <div class="w-1/3 p-4 shadow rounded">
+            <h2 class="text-xl font-medium mb-2">
+                @(isEditMode ? "Edit Spark" : "Create New Spark")
+            </h2>
+            <EditForm Model="sparkModelForm" OnValidSubmit="HandleFormSubmit" class="max-w-2xl flex flex-col space-y-6">
+                <div class="mb-1 text-red-500 text-sm">
+                    <DataAnnotationsValidator/>
+                    <ValidationSummary Model="sparkModelForm"/>
+                </div>
+                <div>
+                    <label for="name" class="block font-medium text-sm text-gray-700">Name</label>
+                    <div class="mt-1">
+                        <InputText @bind-Value="sparkModelForm.Name" id="name" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block mt-1 w-full"/>
+                    </div>
+                    <div class="mt-1 text-red-500 text-sm">
+                        <ValidationMessage For="() => sparkModelForm.Name"/>
+                    </div>
+                </div>
+                <div>
+                    <label for="name" class="block font-medium text-sm text-gray-700">Description</label>
+                    <div class="mt-1">
+                        <InputText @bind-Value="sparkModelForm.Description" id="description" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block mt-1 w-full"/>
+                    </div>
+                    <div class="mt-1 text-red-500 text-sm">
+                        <ValidationMessage For="() => sparkModelForm.Description"/>
+                    </div>
+                </div>
+                <div>
+                    <label for="tags" class="block font-medium text-sm text-gray-700">Tags (comma separated)</label>
+                    <div class="mt-1">
+                        <InputText @bind-Value="sparkModelForm.Tags" id="tags" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block mt-1 w-full"/>
+                    </div>
+                    <div class="mt-1 text-red-500 text-sm">
+                        <ValidationMessage For="() => sparkModelForm.Tags"/>
+                    </div>
+                </div>
+                @if (isEditMode)
+                {
+                    <div class="flex w-full gap-x-2">
+                        <button onclick="@CancelUpdate" class="w-1/2 text-center px-4 py-2 bg-gray-500 hover:bg-gray-700 rounded-md font-semibold text-xs text-white uppercase tracking-widest focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition">
+                            Cancel
+                        </button>
+                        <button type="submit" class="w-1/2 text-center px-4 py-2 bg-indigo-700 hover:bg-indigo-800 rounded-md font-semibold text-xs text-white uppercase tracking-widest focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition">
+                            Save
+                        </button>
+                    </div>
+                }
+                else
+                {
+                    <button type="submit" class="text-center px-4 py-2 bg-indigo-700 hover:bg-indigo-800 rounded-md font-semibold text-xs text-white uppercase tracking-widest focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition">
+                        Create
+                    </button>
+                }
+            </EditForm>
+        </div>
+    </section>
 </section>

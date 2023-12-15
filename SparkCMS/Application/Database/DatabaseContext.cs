@@ -26,6 +26,7 @@ public class DatabaseContext : DbContext
             entity.Property(e => e.Email).HasMaxLength(450).IsRequired();
             entity.HasIndex(e => e.Email).IsUnique();
             entity.Property(e => e.Password).IsRequired();
+            entity.HasMany(u => u.Sparks);
         });
 
         builder.Entity<Role>(entity =>
