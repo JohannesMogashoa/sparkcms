@@ -1,11 +1,11 @@
 ﻿@page "/dashboard"
 @attribute [Authorize]
 
-<PageTitle>Sparks</PageTitle>
+<PageTitle>Dashboard | @Layout.AppName</PageTitle>
 
 <section class="mx-auto max-w-6xl mb-20">
     <h1 class="text-2xl text-gray-800 font-bold mb-5">
-        Sparks
+        My Sparks
     </h1>
     @*This houses all the cards of the sparks you have created*@
     <section class="flex gap-x-5 w-full">
@@ -15,9 +15,10 @@
                 {
                     foreach (var spark in Sparks)
                     {
-                        <SparkCard Spark="spark" ModifySpark="EditSpark" />
+                        <SparkCard Spark="spark" ModifySpark="EditSpark"/>
                     }
-                } else if (Sparks?.Count == 0)
+                }
+                else if (Sparks?.Count == 0)
                 {
                     <span>No Sparks...please create some!</span>
                 }

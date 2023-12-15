@@ -1,0 +1,15 @@
+<div class="shadow p-3 rounded-md">
+    <div class="flex justify-between items-start">
+        <a href="/sparks/@Spark.Id" class="text-xl font-bold mb-3">@Spark.Title</a>
+        <button onclick="@(() => ModifySpark.InvokeAsync(Spark))">Edit</button>
+    </div>
+    @if (Spark.Tags is not null)
+    {
+        <div class="grid-cols-3">
+            @foreach (var tag in Spark.Tags.Split(","))
+            {
+                <span class="mr-2 rounded p-1 bg-blue-200 text-xs">#@tag</span>
+            }
+        </div>
+    }
+</div>
